@@ -1,0 +1,107 @@
+{
+	"info": {
+		"_postman_id": "8cdc705b-6eeb-4a28-bac0-e880643d9efa",
+		"name": "FemaleUsers",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34113509"
+	},
+	"item": [
+		{
+			"name": "CreateFemaleUser",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set(\"userGenderfemale\",\"Female\");"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var respBody=pm.response.json();\r",
+							"pm.environment.set(\"userEmail\",respBody.email);\r",
+							"\r",
+							"console.log(\"Email ==>\"+respBody.email);\r",
+							"\r",
+							"var newlyCreatedUser=respBody.id;\r",
+							"\r",
+							"if(pm.response.code===201){\r",
+							"try {\r",
+							"    const response = await pm.sendRequest({\r",
+							"        url: \"https://gorest.co.in/public/v2/users/\" +newlyCreatedUser,\r",
+							"        method: \"GET\",\r",
+							"        headers:{\r",
+							"            \"Authorization\":\"Bearer f2d4c57ef39a0a1243eb962b4231acc310a136226e08eb5cc34308b08b1d2fad\",\r",
+							"\r",
+							"        }\r",
+							"        \r",
+							"    \r",
+							"    });\r",
+							"\r",
+							"    console.log(response.json());\r",
+							"} catch (err) {\r",
+							"    console.error(err);\r",
+							"}\r",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "f2d4c57ef39a0a1243eb962b4231acc310a136226e08eb5cc34308b08b1d2fad",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Harsha\",\r\n  \"email\": \"{{$randomEmail}}\",\r\n  \"gender\": \"{{userGenderfemale}}\",\r\n  \"status\": \"active\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://gorest.co.in/public/v2/users",
+					"protocol": "https",
+					"host": [
+						"gorest",
+						"co",
+						"in"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "userGender",
+			"value": ""
+		},
+		{
+			"key": "userGenderfemale",
+			"value": ""
+		}
+	]
+}
